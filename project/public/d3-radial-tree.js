@@ -77,7 +77,10 @@ function update(source) {
       .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
       .attr("dy", ".35em")
       .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-      .text(function(d) { return d.name; })
+      .text(function(d) { 
+        console.log('adding name text', d.name);
+        return d.name; 
+      })
       .style("fill-opacity", 1e-6);
 
   // Transition nodes to their new position.
@@ -174,26 +177,23 @@ function click(d) {
 }
 
 function setChildren (node){
-  var artists;
-  console.log('node', node);
-  console.log("node.artist.id ", node.id)
+  
         spotifyApi.getRelatedArtists(node.id).then(function(data) {
           
             if (!node.children) {
                 node.children = []
             }
-            console.log('artists ', artists);
             data.artists.forEach(function(artist) {
-
+                console.log('artist', artist)
                 node.children.push(
                     {
                         'artist': artist,
-                        'children': null
+                        'children': null,
+                        'name': artist.name
                     }
                 )
 
             });
-            console.log('node.children ', node.children)
             update(node);
             //centerNode(node);
           
