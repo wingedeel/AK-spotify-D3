@@ -1,65 +1,33 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
-    <title>Example of the Authorization Code flow with Spotify</title>
+    <meta charset="utf-8">
+    <title>Spotify and D3 Tree display</title>
     <link rel="stylesheet" href="style.css">
     <link href='https://fonts.googleapis.com/css?family=Bitter:400,700' rel='stylesheet' type='text/css'>
-    <style>
-
-.node circle {
-  fill: #999;
-}
-
-.node text {
-  font: 16px sans-serif;
-}
-
-.node--internal circle {
-  fill: #555;
-}
-
-.node--internal text {
-  text-shadow: 0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff;
-}
-
-.link {
-  fill: none;
-  stroke: #555;
-  stroke-opacity: 0.4;
-  stroke-width: 1.5px;
-}
-
-</style>
   </head>
 
-  <body>
-  <div class="container">
-    <div  class="header">
-      <h2 class="header-title">Enter an artist</h2>
-      <form id='searchForm'>
-          <input class="text-input" type="text" id="textInput"> 
-          <button class="button" type="button" id="submitBtn">Submit</button>
-      </form>
-    </div>
+   <body>
 
-    <div id="login">
-        <a href="/login" class="btn btn-primary">Log in with Spotify</a>
+      <div class="container">
+        <div  class="header">
+          <h2 class="header-title">Enter an artist</h2>
+          <form id='searchForm'>
+              <input class="text-input" type="text" id="textInput"> 
+              <button class="button" type="button" id="submitBtn">Submit</button>
+          </form>
+        </div>
+
+        <div id="login">
+            <a href="/login" class="btn btn-primary">Log in with Spotify</a>
+          </div>
       </div>
-<!--
-    <div class="results" id="resultsSection">
-      <h2 class="results-title" id="resultsTitle">Results</h2>
-    </div>
--->
 
-    <svg width="800" height="600"></svg>
-  </div>
-
-  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-  <script src="https://d3js.org/d3.v4.min.js"></script>
-  <script src="spotify-api.js"></script>
-  <script src="d3-radial-tree.js"></script>
-  <script src="main.js"></script>
-
+      <script src="http://d3js.org/d3.v3.min.js"></script>
+      <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+      <script src="spotify-api.js"></script>
+      <script src="d3-radial-tree.js"></script>
+      <script src="main.js"></script>
+  
   </body>
 </html>
-

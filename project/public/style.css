@@ -102,3 +102,21 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.5;
     padding: 0px 20px; 
 }
+
+
+/* node */
+.node circle {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 3px;
+  }
+
+  .node text { font: 12px sans-serif; }
+
+  .link {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 2px;
+  }
+  
+  

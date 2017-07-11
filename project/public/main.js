@@ -4,7 +4,7 @@ var spotifyApi;
 var spotifyEnabled = false;
 var userCountry;
 
-const displayResults = (data) => {
+const displayAsList = (data) => {
   
     let resultsSection = document.getElementById('resultsSection');
 
@@ -24,20 +24,17 @@ const displayResults = (data) => {
       let li = document.createElement('li'); //  Create the elements we need
       let p = document.createElement('p');
       p.innerHTML = `${person.name} `
-                    //`${person.last_name}` + ' | ' + 
-                    //`${person.email} ` + ' | ' + 
-                    //`${person.gender} `
       let span = document.createElement('span');
-      //img.src = author.picture.medium;  // Add the source of the image to be the src of the img element
       span.innerHTML = `${person.name}`
       //li.onclick = function() {
       //    handleItemSelect(person);
       //}
       li.appendChild(p);
-      //li.appendChild(span);
       ul.appendChild(li);
     })
 }
+
+
 /* -----------------  
   INITIALISATION
   ----------------- */
@@ -51,7 +48,7 @@ function handleSubmit(e) {
   if (spotifyEnabled) {
   var artist = encodeURIComponent(input.value.toLowerCase()).trim();
   console.log('artist selected ', artist);
-  // Hardcoded artist id of 'Elvis Presley'
+          // Hardcoded artist id of 'Elvis Presley'
           // Retrieve artist
          //var artistId = '43ZHCT0cAZBISjO8DG9PnE';
          //spotifyApi.getArtist(artistId).then(showArtist);
@@ -63,21 +60,26 @@ function handleSubmit(e) {
                 userCountry
                 ).then(function (data) {
 
-                  console.log('retrieve artist ', data);
+                  //console.log('retrieve artist ', data);
                   if (data.artists.items.length > 0) {
                   // Get  artist id
                   var artistId = data.artists.items[0].id;
-                  console.log('artistId ' ,  artistId);
+                  //console.log('artistId ' ,  artistId);
                   spotifyApi.getArtistRelatedArtists(artistId).then((data)=>{
 
                     // Get related artists
-                    console.log('related artists ' , data);
+                    //console.log('related artists ' , data);
                    
                    //var json =  JSON.stringify(data);
-                   // console.log(json);
+                   //console.log(json);
 
+                   // Create a copy of the returned 'artists' object
+                   // Set key name to 'children', and value to artists.value
+                   // Display that new object.
+                   
                     // Display related artists
-                    //displayResults(data)
+                    //displayAsList(data)
+                    displayAsTree(data);
                   })
                 }
                 //if (data.artists && data.artists.items.length) {
@@ -94,8 +96,7 @@ submitBtn.onclick = handleSubmit;
 
 
 window.addEventListener('load', function () {
-  console.log('WINDOW LOAD')
-
+  
   // Get user's country code
   $.ajax({
             url: "https://freegeoip.net/json/"
@@ -107,10 +108,9 @@ window.addEventListener('load', function () {
         });
 
     // Init results container
-    // Init form
+    /*
     var formArtist = document.getElementById('searchForm');
         formArtist.addEventListener('submit', function (e) {
-          console.log('submit!')
             showCompletion = false;
             e.preventDefault();
             var search = document.getElementById('textInput');
@@ -125,13 +125,12 @@ window.addEventListener('load', function () {
             });
 
         }, false);
+      */
 })
 
 
 
 function makeRequest() {
-
-  console.log('MAKE REQUEST')
 
         /**
          * Obtains parameters from the hash of the URL
