@@ -1,5 +1,6 @@
 var tree;
-var svg;
+var baseSvg;
+var svgGroup;
 var i;
 var diagonal;
 
@@ -21,22 +22,26 @@ function displayAsTree(treeData) {
     .projection(function(d) { return [d.y, d.x]; });
 
   // Remove any previously created svg
-  var chartSVG = document.getElementById('chart');
-  if ( svg != null){
-    var body = document.getElementsByTagName('body');
-    console.log('body', body);
-    document.body.removeChild(chartSVG);
+  var chart = document.getElementById("chart");
+  if ( chart != null){
+    console.log(typeof baseSvg)
+    document.body.removeChild(chart);
   }
 
-
+// Append a group which holds all nodes and which the zoom Listener can act upon.
+    
   // Create an svg in body, of specified width and height
   // Create a <g> within the <svg> and shift by correct margins
-  svg = d3.select("body").append("svg")
+  //svg = d3.select("#tree-container").append("svg")
+  baseSvg = d3.select("body").append("svg")
     .attr("id", "chart")
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    //.call(zoomListener);
+
+  svgGroup = baseSvg.append("g");
 
   // Create a new object with a property name of children rather than artists
   //let obj3 = JSON.parse(JSON.stringify(treeData));
@@ -62,14 +67,15 @@ function update(source) {
   nodes.forEach(function(d) { d.y = d.depth * 180; });
 
   // Declare the nodes…
-  var node = svg.selectAll("g.node")
+  var node = svgGroup.selectAll("g.node")
     .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
   // Enter the nodes.
   var nodeEnter = node.enter().append("g")
     .attr("class", "node")
     .attr("transform", function(d) { 
-      return "translate(" + d.y + "," + d.x + ")"; });
+      return "translate(" + d.y + "," + d.x + ")"; })
+    .on('click', click)
 
   nodeEnter.append("circle")
     .attr("r", 10)
@@ -88,7 +94,7 @@ function update(source) {
     .style("fill-opacity", 1);
 
   // Declare the links…
-  var link = svg.selectAll("path.link")
+  var link = svgGroup.selectAll("path.link")
     .data(links, function(d) { return d.target.id; });
 
   // Enter the links.
@@ -96,3 +102,20 @@ function update(source) {
     .attr("class", "link")
     .attr("d", diagonal);
 }
+
+// ----- CLICK --------- //
+function click(d) {
+        //d = toggleChildren(d);
+    getAndDisplayRelatedArtists(d.name);
+}
+
+// ----- ZOOM --------- //
+/*
+ function zoom() {
+  console.log('zoom')
+        svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+}
+
+// define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
+var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
+*/

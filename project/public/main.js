@@ -47,8 +47,8 @@ const submitBtn = document.getElementById('submitBtn');
 
 function handleSubmit(e) {
   if (spotifyEnabled) {
-  var artist = encodeURIComponent(input.value.toLowerCase()).trim();
-  console.log('artist selected ', artist);
+    var artist = encodeURIComponent(input.value.toLowerCase()).trim();
+ 
           // Hardcoded artist id of 'Elvis Presley'
           // Retrieve artist
          //var artistId = '43ZHCT0cAZBISjO8DG9PnE';
@@ -56,6 +56,8 @@ function handleSubmit(e) {
 
           // Retrieve related artists
          ///spotifyApi.getArtistRelatedArtists(artistId).then(showRelatedArtists);
+         getAndDisplayRelatedArtists(artist);
+    /*
     spotifyApi.searchArtists(
                 artist,
                 userCountry
@@ -86,9 +88,24 @@ function handleSubmit(e) {
                 //if (data.artists && data.artists.items.length) {
                 //    initRootWithArtist(data.artists.items[0]);
                 //}
-    });
-
+     
+    
+   */
   }
+}
+
+
+function getAndDisplayRelatedArtists(artist) {
+   spotifyApi.searchArtists( artist,userCountry)
+    .then(function (data) {
+        if (data.artists.items.length > 0) {
+            var artistId = data.artists.items[0].id;
+            spotifyApi.getArtistRelatedArtists(artistId)
+              .then((data)=>{
+                displayAsTree(data);
+              })
+        }
+  });           
 }
 
 
