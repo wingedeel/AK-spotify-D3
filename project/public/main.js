@@ -4,6 +4,7 @@ var spotifyApi;
 var spotifyEnabled = false;
 var userCountry;
 
+/*
 const displayAsList = (data) => {
   
     let resultsSection = document.getElementById('resultsSection');
@@ -33,7 +34,7 @@ const displayAsList = (data) => {
       ul.appendChild(li);
     })
 }
-
+*/
 
 /* -----------------  
   INITIALISATION

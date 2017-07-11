@@ -20,9 +20,19 @@ function displayAsTree(treeData) {
   diagonal = d3.svg.diagonal()
     .projection(function(d) { return [d.y, d.x]; });
 
+  // Remove any previously created svg
+  var chartSVG = document.getElementById('chart');
+  if ( svg != null){
+    var body = document.getElementsByTagName('body');
+    console.log('body', body);
+    document.body.removeChild(chartSVG);
+  }
+
+
   // Create an svg in body, of specified width and height
   // Create a <g> within the <svg> and shift by correct margins
   svg = d3.select("body").append("svg")
+    .attr("id", "chart")
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
