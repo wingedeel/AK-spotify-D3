@@ -57,6 +57,7 @@ function handleSubmit(e) {
           // Retrieve related artists
          ///spotifyApi.getArtistRelatedArtists(artistId).then(showRelatedArtists);
          getAndDisplayRelatedArtists(artist);
+        
     /*
     spotifyApi.searchArtists(
                 artist,
@@ -94,13 +95,25 @@ function handleSubmit(e) {
   }
 }
 
+/*
+function getRelatedArtists(artist) {
+   spotifyApi.searchArtists( artist,userCountry)
+    .then(function (data) {
+        var artistId = data.artists.items[0].id;
+        spotifyApi.getArtistRelatedArtists(artistId)
+              .then((data)=>{
+                return data;
+              })
+  });           
+}
+*/
 
 function getAndDisplayRelatedArtists(artist) {
    spotifyApi.searchArtists( artist,userCountry)
     .then(function (data) {
         if (data.artists.items.length > 0) {
             var artistId = data.artists.items[0].id;
-            spotifyApi.getArtistRelatedArtists(artistId)
+            spotifyApi.getRelatedArtists(artistId)
               .then((data)=>{
                 displayAsTree(data);
               })

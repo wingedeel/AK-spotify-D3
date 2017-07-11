@@ -4,7 +4,7 @@ var svgGroup;
 var i;
 var diagonal;
 var root;
-duration = 750
+var duration;
 
 function displayAsTree(data) {
  
@@ -12,20 +12,19 @@ function displayAsTree(data) {
     width = 960 - margin.right - margin.left,
     height = 800 - margin.top - margin.bottom;
 
-i = 0,
-    duration = 750,
-    root;
+  i = 0;
+  duration = 750;
 
-tree = d3.layout.tree()
+  tree = d3.layout.tree()
     .size([height, width]);
 
-diagonal = d3.svg.diagonal()
+  diagonal = d3.svg.diagonal()
     .projection(function(d) { return [d.y, d.x]; });
 
-svg = d3.select("body").append("svg")
+  svg = d3.select("body").append("svg")
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom)
-  .append("g")
+    .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   let newObj = {};
@@ -138,14 +137,107 @@ function update(source) {
   });
 }
 
-// Toggle children on click.
+/* Bostock way */
+/*
 function click(d) {
+
+  //----------------
+  // This node does not know what its children are yet.
+  // We have to make an api request for them.
+  // Make a request to the Spotify web api for the new artist
+  //getAndDisplayRelatedArtists(d.name);
+  //----------------
+
   if (d.children) {
+    // If node has children, store the children it has in _children
+    // Set the children to null
     d._children = d.children;
     d.children = null;
   } else {
+    // If node doesn't have children, reset its children from the stored _children value.
+    // Empty the _children value.
     d.children = d._children;
     d._children = null;
   }
   update(d);
 }
+*/
+
+function click(d) {
+  if (d.children) {
+    d._children = d.children;
+    d.children = null;
+  } else {
+    setChildren(d);
+  }
+  update(d);
+}
+
+function setChildren (node){
+  var artists;
+  console.log('node', node);
+  console.log("node.artist.id ", node.id)
+        spotifyApi.getRelatedArtists(node.id).then(function(data) {
+          
+            if (!node.children) {
+                node.children = []
+            }
+            console.log('artists ', artists);
+            data.artists.forEach(function(artist) {
+
+                node.children.push(
+                    {
+                        'artist': artist,
+                        'children': null
+                    }
+                )
+
+            });
+            console.log('node.children ', node.children)
+            update(node);
+            //centerNode(node);
+          
+        });
+}
+
+
+/* ArtistExplorer way */
+/*
+function click(d) {
+        d = toggleChildren(d);
+}
+
+function toggleChildren(d) {
+        if (d.children) {
+            d.children = null;
+            //update(d);
+            //centerNode(d);
+        } else {
+            setChildrenAndUpdateForArtist(d);
+        }
+        return d;
+}
+
+function setChildrenAndUpdateForArtist(node) {
+        var artists;
+        AE.getRelated(node.artist.id, exploredArtistIds).then(function(artists) {
+            if (!node.children) {
+                node.children = []
+            }
+
+            artists.forEach(function(artist) {
+
+                node.children.push(
+                    {
+                        'artist': artist,
+                        'children': null
+                    }
+                )
+                exploredArtistIds.push(artist.id);
+
+            });
+            update(node);
+            centerNode(node);
+        });
+    }
+*/

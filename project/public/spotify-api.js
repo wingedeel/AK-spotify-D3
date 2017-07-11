@@ -2,7 +2,7 @@ var spotifyApi = function (serverBasePath, access_token) {
 
   var authHeader = { 'Authorization': 'Bearer ' + access_token } 
 
-  var getArtistRelatedArtists = function(artistId) {
+  var getRelatedArtists = function(artistId) {
     var url = serverBasePath + '/artists/' + artistId + '/related-artists';
     return $.ajax({
         url: url,
@@ -60,7 +60,7 @@ var spotifyApi = function (serverBasePath, access_token) {
 
 
   return {
-    getArtistRelatedArtists: getArtistRelatedArtists,
+    getRelatedArtists: getRelatedArtists,
     getArtist: getArtist,
     getArtists: getArtists,
     searchArtists: searchArtists,
