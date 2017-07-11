@@ -1,7 +1,9 @@
-My first Spotify project, based on the following:
+Display Spotify data as a D3 tree
 
-# Spotify Accounts Authentication Examples
-This project contains basic demos showing the different OAuth 2.0 flows for [authenticating against the Spotify Web API](https://developer.spotify.com/web-api/authorization-guide/).
+- using Spotify Accounts Authentication Examples
+- tree diagram based on:
+http://bl.ocks.org/d3noob/8329447
+
 
 # To run
 
