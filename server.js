@@ -20,13 +20,7 @@ var redirect_uri = 'REDIRECT_URI'; // Your redirect uri
 
 var client_id = '72ac1ab19aee4448ad8177a8a9362079'; // Your client id
 var client_secret = 'f2f3af2c6dd644178f76a8e2a4c2ef22'; // Your secret
-//var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
-var redirect_uri;
-//if (location.hostname === 'localhost:8000') {
- //   redirect_uri = 'http://localhost:8000/callback.html';
- // } else {
-    redirect_uri = 'https://ak-spotify-d3.herokuapp.com/callback.html';
- // }
+var redirect_uri = 'http://localhost:8000/callback'; // Your redirect uri
 
 /**
  * Generates a random string containing numbers and letters
@@ -161,5 +155,5 @@ app.get('/refresh_token', function(req, res) {
   });
 });
 
-console.log('Listening on 8888');
-app.listen(8888);
+console.log('Listening on 8000');
+app.listen(8000);
