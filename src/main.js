@@ -12,70 +12,20 @@ var userCountry;
 // Get references to DOM elements
 const input = document.getElementById('textInput');
 const submitBtn = document.getElementById('submitBtn');
+const loginBtn = document.getElementById('loginBtn');
 
 
 function handleSubmit(e) {
   if (spotifyEnabled) {
     var artist = encodeURIComponent(input.value.toLowerCase()).trim();
- 
-          // Hardcoded artist id of 'Elvis Presley'
-          // Retrieve artist
-         //var artistId = '43ZHCT0cAZBISjO8DG9PnE';
-         //spotifyApi.getArtist(artistId).then(showArtist);
-
-          // Retrieve related artists
-         ///spotifyApi.getArtistRelatedArtists(artistId).then(showRelatedArtists);
-         getAndDisplayRelatedArtists(artist);
-        
-    /*
-    spotifyApi.searchArtists(
-                artist,
-                userCountry
-                ).then(function (data) {
-
-                  //console.log('retrieve artist ', data);
-                  if (data.artists.items.length > 0) {
-                  // Get  artist id
-                  var artistId = data.artists.items[0].id;
-                  //console.log('artistId ' ,  artistId);
-                  spotifyApi.getArtistRelatedArtists(artistId).then((data)=>{
-
-                    // Get related artists
-                    //console.log('related artists ' , data);
-                   
-                   //var json =  JSON.stringify(data);
-                   //console.log(json);
-
-                   // Create a copy of the returned 'artists' object
-                   // Set key name to 'children', and value to artists.value
-                   // Display that new object.
-                   
-                    // Display related artists
-                    //displayAsList(data)
-                    displayAsTree(data);
-                  })
-                }
-                //if (data.artists && data.artists.items.length) {
-                //    initRootWithArtist(data.artists.items[0]);
-                //}
-     
-    
-   */
+    getAndDisplayRelatedArtists(artist);
   }
 }
 
-/*
-function getRelatedArtists(artist) {
-   spotifyApi.searchArtists( artist,userCountry)
-    .then(function (data) {
-        var artistId = data.artists.items[0].id;
-        spotifyApi.getArtistRelatedArtists(artistId)
-              .then((data)=>{
-                return data;
-              })
-  });           
+function handleLogin(e) {
+    login();
 }
-*/
+
 
 function getAndDisplayRelatedArtists(artist) {
    spotifyApi.searchArtists( artist,userCountry)
@@ -93,6 +43,7 @@ function getAndDisplayRelatedArtists(artist) {
 
 // Set event handlers
 submitBtn.onclick = handleSubmit;
+loginBtn.onclick = handleLogin;
 
 
 window.addEventListener('load', function () {
@@ -107,35 +58,15 @@ window.addEventListener('load', function () {
             }
         });
 
-    // Init results container
-    /*
-    var formArtist = document.getElementById('searchForm');
-        formArtist.addEventListener('submit', function (e) {
-            showCompletion = false;
-            e.preventDefault();
-            var search = document.getElementById('textInput');
-            currentApi.searchArtists(
-                search.value.trim(),
-                userCountry
-                ).then(function (data) {
-                  console.log('searchArtist', data)
-                //if (data.artists && data.artists.items.length) {
-                //    initRootWithArtist(data.artists.items[0]);
-                //}
-            });
-
-        }, false);
-      */
+        spotifyApi = new spotifyApi();
+        
+        login();
 })
 
 
-
+/*
 function makeRequest() {
 
-        /**
-         * Obtains parameters from the hash of the URL
-         * @return Object
-         */
         function getHashParams() {
           var hashParams = {};
           var e, r = /([^&;=]+)=?([^&;]*)/g,
@@ -159,18 +90,6 @@ function makeRequest() {
 
             spotifyApi = new spotifyApi(serverBasePath, access_token);
             spotifyEnabled = true;
-/*
-            // Make a call to Spotify for my credentials
-            $.ajax({
-                url: 'https://api.spotify.com/v1/me',
-                headers: {
-                  'Authorization': 'Bearer ' + access_token
-                },
-                success: function(response) {
-                  console.log('get my credentials: ', response);
-                }
-            });
-*/
 
           } else {
              
@@ -180,14 +99,49 @@ function makeRequest() {
         }
 
 };
+*/
+
+ //makeRequest();
+
+ function login() {
+
+        return new Promise(function (resolve, reject) {
+            OAuthManager.obtainToken({
+              scopes: [
+                  'playlist-read-private',
+                  'playlist-modify-public',
+                  'playlist-modify-private'
+                ]
+              }).then(function(token) {
+                resolve(onTokenReceived(token));
+              }).catch(function(error) {
+                console.error(error);
+              });
+          });
+  }
 
 
-function showArtist (artist) {
-    console.log('retrieved artist ', artist)
+function onTokenReceived(access_token) {
+  console.log('afterTokenReceived', access_token);
+    spotifyApi.setServerBasePath(serverBasePath)
+    spotifyApi.setAccessToken(access_token);
+    spotifyEnabled = true;
+
+        //return new Promise(function (resolve, reject) {
+            //artistInfoModel.isLoggedIn(true);
+           // spotifyWebApi.setAccessToken(accessToken);
+           // localStorage.setItem('ae_token', accessToken);
+           // localStorage.setItem('ae_expires', (new Date()).getTime() + 3600 * 1000); // 1 hour
+            //spotifyWebApi.getMe().then(function(data){
+               // artistInfoModel.userId(data.id);
+                //artistInfoModel.displayName(getDisplayName(data.display_name));
+                //artistInfoModel.userImage(data.images[0].url);
+                //localStorage.setItem('ae_userid', data.id);
+                //localStorage.setItem('ae_display_name', data.display_name);
+                //localStorage.setItem('ae_user_image', data.images[0].url);
+                //currentApi = spotifyWebApi;
+                //resolve(checkArtistExplorerPlaylistExists(artistInfoModel.userId(), 0, 50));
+           // });
+        //});
 }
 
-function showRelatedArtists (artists) {
-  console.log('retrieved related artists ', artists)
-}
-
- makeRequest();

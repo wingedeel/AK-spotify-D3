@@ -1,6 +1,16 @@
-var spotifyApi = function (serverBasePath, access_token) {
+var spotifyApi = function () {
 
-  var authHeader = { 'Authorization': 'Bearer ' + access_token } 
+  var authHeader;
+  var serverBasePath;
+
+  var setServerBasePath = function (path ) {
+    serverBasePath = path;
+  }
+
+  var setAccessToken = function (token) {
+    access_token = token;
+    authHeader = { 'Authorization': 'Bearer ' + access_token } 
+  }
 
   var getRelatedArtists = function(artistId) {
     var url = serverBasePath + '/artists/' + artistId + '/related-artists';
@@ -64,7 +74,9 @@ var spotifyApi = function (serverBasePath, access_token) {
     getArtist: getArtist,
     getArtists: getArtists,
     searchArtists: searchArtists,
-    getArtistTopTracks: getArtistTopTracks
+    getArtistTopTracks: getArtistTopTracks,
+    setServerBasePath: setServerBasePath,
+    setAccessToken: setAccessToken
   }
 
 };

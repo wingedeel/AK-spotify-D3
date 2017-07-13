@@ -32,6 +32,7 @@ h1, h2, h3, h4, h5, h6 {
     outline: none; 
 }
 
+
 /* text-input */
 .text-input {
   border: none;
@@ -102,7 +103,6 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.5;
     padding: 0px 20px; 
 }
-
 
 /* node */
 .node {
