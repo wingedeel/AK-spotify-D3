@@ -21,19 +21,24 @@ function displayAsTree(data) {
   diagonal = d3.svg.diagonal()
     .projection(function(d) { return [d.y, d.x]; });
 
+  // Create body.svg.g
   svg = d3.select("body").append("svg")
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+  // Root object is a simple object with
+  // a children property which consists of an
+  // array of related artists
   let newObj = {};
   newObj.children = data.artists;
   root = newObj;
   root.x0 = height / 2;
   root.y0 = 0;
-  console.log('root ', root);
 
+/*
+// Not sure this is needed
   function collapse(d) {
     if (d.children) {
       d._children = d.children;
@@ -43,6 +48,8 @@ function displayAsTree(data) {
   }
 
   root.children.forEach(collapse);
+  */
+
   update(root);
 }
 
@@ -52,16 +59,23 @@ function displayAsTree(data) {
 
 function update(source) {
 
-  // Compute the new tree layout.
+  console.log('update ', source)
+
+  // Compute the new tree layout.  
+  // Create the nodes and links.
   var nodes = tree.nodes(root).reverse(),
       links = tree.links(nodes);
 
-  // Normalize for fixed-depth.
+  // Normalize for fixed-depth. 
+  // Set the y pos for each node
   nodes.forEach(function(d) { d.y = d.depth * 180; });
 
   // Update the nodes…
+  // Create nodes in body.svg.g
   var node = svg.selectAll("g.node")
-      .data(nodes, function(d) { return d.id || (d.id = ++i); });
+      .data(nodes, function(d) { 
+        return d.id || (d.id = ++i); 
+      });
 
   // Enter any new nodes at the parent's previous position.
   var nodeEnter = node.enter().append("g")
@@ -78,7 +92,6 @@ function update(source) {
       .attr("dy", ".35em")
       .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
       .text(function(d) { 
-        console.log('adding name text', d.name);
         return d.name; 
       })
       .style("fill-opacity", 1e-6);
@@ -177,25 +190,30 @@ function click(d) {
 }
 
 function setChildren (node){
-  
+        
+        // Get related artists for this node
+        // First time round, root node does have children property filled with related artists
+        // Subsequent times, the clicked on node does not
         spotifyApi.getRelatedArtists(node.id).then(function(data) {
           
             if (!node.children) {
                 node.children = []
             }
             data.artists.forEach(function(artist) {
-                console.log('artist', artist)
                 node.children.push(
                     {
-                        'artist': artist,
+                        //'artist': artist,
                         'children': null,
-                        'name': artist.name
+                        'name': artist.name,
+                        //'id': artist.id
                     }
                 )
 
             });
             update(node);
             //centerNode(node);
+
+            console.log('setChildren ', node);
           
         });
 }

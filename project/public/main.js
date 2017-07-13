@@ -4,37 +4,6 @@ var spotifyApi;
 var spotifyEnabled = false;
 var userCountry;
 
-/*
-const displayAsList = (data) => {
-  
-    let resultsSection = document.getElementById('resultsSection');
-
-    // Remove <ul> if it already exists
-    ul = document.getElementById('resultsList');
-    if (ul !== null) resultsSection.removeChild(ul);
-
-    // If we have results create a new <ul>
-    // Append it to the 'resultsSection'
-    ul = document.createElement('ul');
-    ul.id = 'resultsList';
-    ul.className = 'results-list';
-    resultsSection.append(ul)
-
-    // Add relevant <li> tags to it
-    return data.artists.map(function(person) { // Map through the results and for each run the code below
-      let li = document.createElement('li'); //  Create the elements we need
-      let p = document.createElement('p');
-      p.innerHTML = `${person.name} `
-      let span = document.createElement('span');
-      span.innerHTML = `${person.name}`
-      //li.onclick = function() {
-      //    handleItemSelect(person);
-      //}
-      li.appendChild(p);
-      ul.appendChild(li);
-    })
-}
-*/
 
 /* -----------------  
   INITIALISATION
