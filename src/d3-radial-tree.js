@@ -8,15 +8,18 @@ var duration;
 
 function displayAsTree(data) {
  
-  var margin = {top: 20, right: 120, bottom: 20, left: 120},
+  var margin = {top: 30, right: 120, bottom: 20, left: 120},
     width = 960 - margin.right - margin.left,
-    height = 800 - margin.top - margin.bottom;
+    height = 780 - margin.top - margin.bottom;
 
   i = 0;
   duration = 750;
 
   tree = d3.layout.tree()
-    .size([height, width]);
+    .size([height, width])
+    .separation(function(a, b) {
+        return a.parent == b.parent ? 3 : 2.25;
+    });
 
   diagonal = d3.svg.diagonal()
     .projection(function(d) { return [d.y, d.x]; });
@@ -37,23 +40,8 @@ function displayAsTree(data) {
   root.x0 = height / 2;
   root.y0 = 0;
 
-/*
-// Not sure this is needed
-  function collapse(d) {
-    if (d.children) {
-      d._children = d.children;
-      d._children.forEach(collapse);
-      d.children = null;
-    }
-  }
-
-  root.children.forEach(collapse);
-  */
-
   update(root);
 }
-
-//d3.select(self.frameElement).style("height", "800px");
 
 
 
@@ -85,7 +73,7 @@ function update(source) {
 
   nodeEnter.append("circle")
       .attr("r", 1e-6)
-      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+      .style("fill", function(d) { return d._children ? "#193441" : "#fff"; });
 
   nodeEnter.append("text")
       .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
@@ -103,7 +91,7 @@ function update(source) {
 
   nodeUpdate.select("circle")
       .attr("r", 4.5)
-      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+      .style("fill", function(d) { return d._children ? "#193441" : "#fff"; });
 
   nodeUpdate.select("text")
       .style("fill-opacity", 1);
